@@ -1,0 +1,51 @@
+#######################################
+# Syntax Coloring Map For gpio_MCP23S17
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+gpio_MCP23S17	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+postSetup	KEYWORD2
+writeByte	KEYWORD2
+writeWord	KEYWORD2
+readAddress	KEYWORD2
+gpioPinMode	KEYWORD2
+gpioPort	KEYWORD2
+readGpioPort	KEYWORD2
+readGpioPortFast	KEYWORD2
+gpioDigitalWrite	KEYWORD2
+gpioDigitalWriteFast	KEYWORD2
+gpioDigitalRead	KEYWORD2
+gpioRegisterReadByte	KEYWORD2
+gpioRegisterReadWord	KEYWORD2
+gpioDigitalReadFast	KEYWORD2
+gpioRegisterWriteByte	KEYWORD2
+gpioRegisterWriteWord	KEYWORD2
+portPullup	KEYWORD2
+gpioPortUpdate	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+MCP23S17_IOCON	LITERAL1
+MCP23S17_IODIR	LITERAL1
+MCP23S17_GPPU	LITERAL1
+MCP23S17_GPIO	LITERAL1
+MCP23S17_GPINTEN	LITERAL1
+MCP23S17_IPOL	LITERAL1
+MCP23S17_DEFVAL	LITERAL1
+MCP23S17_INTF	LITERAL1
+MCP23S17_INTCAP	LITERAL1
+MCP23S17_OLAT	LITERAL1
+MCP23S17_INTCON	LITERAL1
+
+
