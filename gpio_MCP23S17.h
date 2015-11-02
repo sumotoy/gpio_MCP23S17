@@ -12,7 +12,7 @@ model:			company:		pins:		protocol:		Special Features:
 mcp23s17		Microchip		 16			SPI					INT/HAEN
 ---------------------------------------------------------------------------------------------------------------------
 Version history:
-0.8 Initial
+0.9 Fixed an example, added getInterruptNumber function.
 ---------------------------------------------------------------------------------------------------------------------
 		Copyright (c) 2013-2014, s.u.m.o.t.o.y [sumotoy(at)gmail.com]
 ---------------------------------------------------------------------------------------------------------------------
@@ -152,6 +152,7 @@ public:
 	void 			gpioRegisterWriteWord(byte reg,word data);		//write a word in a chip register
 	void			portPullup(uint16_t data);						// HIGH=all pullup, LOW=all pulldown,0xxxx=you choose witch
 	void			gpioPortUpdate();
+	int 			getInterruptNumber(byte pin);
 	// direct access commands
 	uint16_t 		readAddress(byte addr);
 	#if defined (SPI_HAS_TRANSACTION)
