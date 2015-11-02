@@ -13,11 +13,7 @@ const uint8_t gpio_int_pin = 2;//pin connected to INTA mcp23s17
 
 volatile boolean keyPressed     = false;
 
-#if defined (SPI_HAS_TRANSACTION)
 gpio_MCP23S17 mcp(gpio_cs_pin, GPIO_ADRS);
-#else
-gpio_MCP23S17 mcp(gpio_cs_pin, GPIO_ADRS);
-#endif
 
 
 void setup() {
@@ -30,7 +26,7 @@ void setup() {
   //setup the gpio!
   /*        7     6     5	     4     3   2     1    0
    IOCON = BANK MIRROR SEQOP DISSLW HAEN ODR INTPOL -NC- */
-  mcp.gpioRegisterWriteByte(MCP23S17_IOCON, 0b01101000);//HAEN,SEQOP,MIRROR
+  mcp.gpioRegisterWriteByte(MCP23S17_IOCON, 0b01101100);//HAEN,SEQOP,MIRROR,OPENDRAIN(add a 10K res on INT) 0b01100000
   mcp.gpioRegisterWriteByte(MCP23S17_GPPU, 0xFF, true);//pull-up every port (A&B)
   mcp.gpioRegisterWriteByte(MCP23S17_IPOL, 0xFF, true);//invert polarity on every port (A&B)
   mcp.gpioRegisterWriteByte(MCP23S17_GPINTEN, 0xFF, true);//enable interrups on every port (A&B)
@@ -38,21 +34,29 @@ void setup() {
   mcp.gpioRegisterReadByte(MCP23S17_INTCAP + 1);//read interrupt capture port B (it clear port)
 
   int intNumber = mcp.getInterruptNumber(gpio_int_pin);
-  if (intNumber < 255){
+  if (intNumber < 255) {
     attachInterrupt(intNumber, keypress, FALLING);//attack interrupt
   } else {
     Serial.println("sorry, pin has no INT capabilities!");
   }
+
 }
 
 int onKeypress() {
-  unsigned int keyValue = 0;
+  uint16_t keyValue = 0;
   delay(10);//debounce
   int result = -1;//default, means no button pressed
   uint8_t i;
   keyPressed = false;//time to reset keypress
-  if (mcp.gpioRegisterReadByte(MCP23S17_INTF)) keyValue |= mcp.gpioRegisterReadByte(MCP23S17_INTCAP);//read value port A
-  if (mcp.gpioRegisterReadByte(MCP23S17_INTF + 1)) keyValue |= mcp.gpioRegisterReadByte(MCP23S17_INTCAP + 1) << 8;//read value port B
+
+  if (mcp.gpioRegisterReadByte(MCP23S17_INTF)) {
+    keyValue &= 0x00FF;
+    keyValue |= mcp.gpioRegisterReadByte(MCP23S17_INTCAP);    // read value at time of interrupt
+  }
+  if (mcp.gpioRegisterReadByte(MCP23S17_INTF + 1)) {
+    keyValue &= 0xFF00;
+    keyValue |= mcp.gpioRegisterReadByte(MCP23S17_INTCAP + 1) << 8;        // port B is in low-order byte
+  }
   for (i = 0; i < 16; i++) {
     if (keyValue & (1 << i)) {
       result = i;
@@ -69,6 +73,6 @@ void loop() {
   }
 }
 
-void keypress() {
+static void keypress() {
   keyPressed = true;
 }
