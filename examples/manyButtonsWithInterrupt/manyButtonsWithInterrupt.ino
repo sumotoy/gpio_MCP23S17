@@ -33,9 +33,7 @@ void setup() {
   mcp.gpioRegisterWriteByte(MCP23S17_IOCON, 0b01101000);//HAEN,SEQOP,MIRROR
   mcp.gpioRegisterWriteByte(MCP23S17_GPPU, 0xFF, true);//pull-up every port (A&B)
   mcp.gpioRegisterWriteByte(MCP23S17_IPOL, 0xFF, true);//invert polarity on every port (A&B)
-  mcp.gpioRegisterWriteByte(MCP23S17_IPOL + 1, 0xFF, true); //invert polarity on every port (A&B)
   mcp.gpioRegisterWriteByte(MCP23S17_GPINTEN, 0xFF, true);//enable interrups on every port (A&B)
-  mcp.gpioRegisterWriteByte(MCP23S17_GPINTEN + 1, 0xFF, true); //enable interrups on every port (A&B)
   mcp.gpioRegisterReadByte(MCP23S17_INTCAP);    //read interrupt capture port A (it clear port)
   mcp.gpioRegisterReadByte(MCP23S17_INTCAP + 1);//read interrupt capture port B (it clear port)
 
