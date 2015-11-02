@@ -3,3 +3,8 @@ A complete library for Microchip MCP23S17 http://ww1.microchip.com/downloads/en/
 The library it's fully *SPI transaction compatible* and can be easily included in other libraries, has methods that let's you change ports values fastly and you can easily access chip register directly.<br>
 This library has been extracted from my universal gpio_library and I will maintain separately.<br>
 I have included several examples but a complete wiki and detailed images will be published soon.
+Features:<br>
+ - Full access to all MCP features.
+ - Scalable complexity, easy to use as GPIO but advanced use always possible.
+ - Mature and stable library, I've used in many projects.
+ - Fully SPI transaction compatible, it doesn't interfere with other SPI devices.
