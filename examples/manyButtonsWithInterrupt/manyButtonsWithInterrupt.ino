@@ -7,17 +7,16 @@ In this example we will use a MCP23S17 with 16 push buttons.
 #include <gpio_MCP23S17.h>   // import library
 
 #define GPIO_ADRS          0x20//SPI
-
-const uint8_t gpio_cs_pin = 10;
-const uint8_t gpio_int_pin = 2;//pin connected to INTA mcp23s17
+#define GPIO_CS            10
+#define GPIO_INTPIN        2
 
 volatile boolean keyPressed     = false;
 
-gpio_MCP23S17 mcp(gpio_cs_pin, GPIO_ADRS);
+gpio_MCP23S17 mcp(GPIO_CS, GPIO_ADRS);
 
 
 void setup() {
-  pinMode(gpio_int_pin, INPUT);
+  pinMode(GPIO_INTPIN, INPUT);
   Serial.begin(38400);
   long unsigned debug_start = millis ();
   while (!Serial && ((millis () - debug_start) <= 5000));
@@ -33,7 +32,7 @@ void setup() {
   mcp.gpioRegisterReadByte(MCP23S17_INTCAP);    //read interrupt capture port A (it clear port)
   mcp.gpioRegisterReadByte(MCP23S17_INTCAP + 1);//read interrupt capture port B (it clear port)
 
-  int intNumber = mcp.getInterruptNumber(gpio_int_pin);
+  int intNumber = mcp.getInterruptNumber(GPIO_INTPIN);
   if (intNumber < 255) {
     attachInterrupt(intNumber, keypress, FALLING);//attack interrupt
   } else {
@@ -45,7 +44,7 @@ void setup() {
 int onKeypress() {
   uint16_t keyValue = 0;
   delay(10);//debounce
-  int result = -1;//default, means no button pressed
+  int result = -1;//default, no button pressed
   uint8_t i;
   keyPressed = false;//time to reset keypress
 
@@ -69,7 +68,7 @@ int onKeypress() {
 void loop() {
   if (keyPressed) {
     int key = onKeypress();
-    if (key > -1)  Serial.println(key);
+    if (key >= 0)  Serial.println(key);
   }
 }
 

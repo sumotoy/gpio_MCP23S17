@@ -63,19 +63,19 @@ A2,A1,A0 tied to ground = 0x20
 
 #if defined (SPI_HAS_TRANSACTION)
 #if defined(__MK20DX128__) || defined(__MK20DX256__)//Teensy 3.0 or 3.1
-#define MAXSPISPEED				30000000
+const static uint32_t _MCPMaxSpeed = 30000000UL;
 #elif defined(__MKL26Z64__) //Teensy LC
-#define MAXSPISPEED				12000000
+const static uint32_t _MCPMaxSpeed = 12000000UL;
 #elif defined(ARDUINO) && defined(__arm__) && !defined(CORE_TEENSY)	//DUE	
-#define MAXSPISPEED				24000000
+const static uint32_t _MCPMaxSpeed = 24000000UL;
 #elif defined(__32MX320F128H__) || defined(__32MX795F512L__) //uno and max	chipkit	
-#define MAXSPISPEED				8000000
+const static uint32_t _MCPMaxSpeed = 8000000UL;
 #elif defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
-#define MAXSPISPEED				2000000
+const static uint32_t _MCPMaxSpeed = 2000000UL;
 #elif defined (__AVR_ATmega328P__) || defined (__AVR_ATmega168P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644PA__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)
-#define MAXSPISPEED				8000000
+const static uint32_t _MCPMaxSpeed = 8000000UL;
 #else
-#define MAXSPISPEED				2000000
+const static uint32_t _MCPMaxSpeed = 2000000UL;
 #endif
 #endif
 
@@ -106,19 +106,12 @@ INTPOL: (This bit sets the polarity of the INT output pin)
 0 Active low
 */
 
-	//------------------------- REGISTERS
-	const static byte			MCP23S17_IOCON = 	0x0A;
-	const static byte			MCP23S17_IODIR = 	0x00;
-	const static byte			MCP23S17_GPPU = 	0x0C;
-	const static byte			MCP23S17_GPIO = 	0x12;
-	const static byte			MCP23S17_GPINTEN =  0x04;
-	const static byte			MCP23S17_IPOL = 	0x02;
-	const static byte			MCP23S17_DEFVAL = 	0x06;
-	const static byte			MCP23S17_INTF = 	0x0E;
-	const static byte			MCP23S17_INTCAP = 	0x10;
-	const static byte			MCP23S17_OLAT = 	0x14;
-	const static byte			MCP23S17_INTCON = 	0x08;
+#include "_includes/MCP23S17_registers.h"
 	
+#ifdef SPI_HAS_TRANSACTION
+//static SPISettings settings;
+#endif
+
 class gpio_MCP23S17 {
 
 public:
@@ -154,32 +147,79 @@ public:
 	void			gpioPortUpdate();
 	int 			getInterruptNumber(byte pin);
 	// direct access commands
-	uint16_t 		readAddress(byte addr);
-	#if defined (SPI_HAS_TRANSACTION)
-	void			setSPIspeed(uint32_t spispeed);//for SPI transactions
-	#endif
+	uint16_t 		gpioReadAddress(byte addr);
+
 	
 
 protected:
-	uint8_t 		_adrs;
+	
+	
+	inline __attribute__((always_inline))
+	void _GPIOstartSend(bool mode) {
+	#if defined (SPI_HAS_TRANSACTION)
+		SPI.beginTransaction(SPISettings(_MCPMaxSpeed, MSBFIRST, SPI_MODE0));
+	#endif
+
+	#if defined(__FASTWRITE)
+		digitalWriteFast(_cs, LOW);
+	#else
+		digitalWrite(_cs, LOW);
+	#endif
+		mode == 1 ? SPI.transfer(_readCmd) : SPI.transfer(_writeCmd);
+	}
+	
+	
+	inline __attribute__((always_inline))
+	void _GPIOendSend(void){
+	#if defined(__FASTWRITE)
+		digitalWriteFast(_cs, HIGH);
+	#else
+		digitalWrite(_cs, HIGH);
+	#endif
+
+	#if defined (SPI_HAS_TRANSACTION)
+		SPI.endTransaction();
+	#endif
+	}
+	
+	inline __attribute__((always_inline))
+	void _GPIOwriteByte(byte addr, byte data){
+		_GPIOstartSend(0);
+		SPI.transfer(addr);
+		SPI.transfer(data);
+		_GPIOendSend();
+	}
+	
+	inline __attribute__((always_inline))
+	void _GPIOwriteWord(byte addr, uint16_t data){
+		_GPIOstartSend(0);
+		SPI.transfer(addr);
+		#if !defined(__SAM3X8E__) && ((ARDUINO >= 160) || (TEENSYDUINO > 121))
+			SPI.transfer16(data);
+		#else
+			//SPI.transfer(word2lowByte(data));
+			//SPI.transfer(word2highByte(data));
+			SPI.transfer(data >> 8);
+			SPI.transfer(data & 0xFF);
+		#endif
+		_GPIOendSend();
+}
+	
+	
+	
 private:
     uint8_t 		_cs;
-
+	uint8_t 		_adrs;
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__)
 		uint8_t _miso, _mosi, _sclk;
 		boolean	_useAltSPI;
 	#endif
-	
-	uint32_t		_spiTransactionsSpeed;//for SPI transactions
+
 	
 	uint8_t 		_useHaen;
 	uint8_t 		_readCmd;
 	uint8_t 		_writeCmd;
-	void 			startSend(bool mode);
-	void 			endSend();
 	uint16_t		_gpioDirection;
 	uint16_t		_gpioState;
-	void			writeByte(byte addr, byte data);	
-	void 			writeWord(byte addr, uint16_t data);
 };
 #endif
