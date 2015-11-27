@@ -11,13 +11,13 @@ Features:<br>
  - Compatible with all 8bit arduino, DUE, Teensy(all), ESP8266.
  - 
  
------------------------------- MCP23S17 WIRING ------------------------------------
-This chip has a very useful feature called HAEN that allow you to share the same CS pin trough
-8 different addresses. Of course chip has to be Microchip and should be assigned to different addresses!
-
+------------------------------ MCP23S17 WIRING ------------------------------------<br>
+This chip has a very useful feature called HAEN that allow you to share the same CS pin trough<br>
+8 different addresses. Of course chip has to be Microchip and should be assigned to different addresses!<br>
+<br>
 Basic Address:  00100 A2 A1 A0 (from 0x20 to 0x27)<br>
 A2,A1,A0 tied to ground = 0x20<br>
-				      _______<br>
+<br>
 IOB-0.[|...U...|] IOA-7<br>
 IOB-1.[|.........|] IOA-6<br>
 IOB-2.[|.........|] IOA-5<br>
