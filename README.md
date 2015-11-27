@@ -9,3 +9,27 @@ Features:<br>
  - Mature and stable library, I've used in many projects.
  - Fully SPI transaction compatible, it doesn't interfere with other SPI devices.
  - Compatible with all 8bit arduino, DUE, Teensy(all), ESP8266.
+ - 
+ 
+------------------------------ MCP23S17 WIRING ------------------------------------
+This chip has a very useful feature called HAEN that allow you to share the same CS pin trough
+8 different addresses. Of course chip has to be Microchip and should be assigned to different addresses!
+
+Basic Address:  00100 A2 A1 A0 (from 0x20 to 0x27)<br>
+A2,A1,A0 tied to ground = 0x20<br>
+				      _______<br>
+IOB-0.[|...U...|] IOA-7<br>
+IOB-1.[|.........|] IOA-6<br>
+IOB-2.[|.........|] IOA-5<br>
+IOB-3.[|.........|] IOA-4<br>
+IOB-4.[|.........|] IOA-3<br>
+IOB-5.[|.........|] IOA-2<br>
+IOB-6.[|.........|] IOA-1<br>
+IOB-7.[|.........|] IOA-0<br>
+++++..[|.........|] INT-A<br>
+GND..[|.........|] INT-B<br>
+CS.....[|.........|] RST (connect to +)<br>
+SCK...[|.........|] A2<br>
+MOSI.[|.........|] A1<br>
+MISO..[|____|] A0<br>
+<br>
