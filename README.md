@@ -8,3 +8,4 @@ Features:<br>
  - Scalable complexity, easy to use as GPIO but advanced use always possible.
  - Mature and stable library, I've used in many projects.
  - Fully SPI transaction compatible, it doesn't interfere with other SPI devices.
+ - Compatible with all 8bit arduino, DUE, Teensy(all), ESP8266.
