@@ -13,6 +13,7 @@ mcp23s17		Microchip		 16			SPI					INT/HAEN
 ---------------------------------------------------------------------------------------------------------------------
 Version history:
 0.9 Fixed an example, added getInterruptNumber function.
+0.95 Added compatibility with ESP8266
 ---------------------------------------------------------------------------------------------------------------------
 		Copyright (c) 2013-2014, s.u.m.o.t.o.y [sumotoy(at)gmail.com]
 ---------------------------------------------------------------------------------------------------------------------
@@ -108,8 +109,8 @@ INTPOL: (This bit sets the polarity of the INT output pin)
 
 #include "_includes/MCP23S17_registers.h"
 	
-#ifdef SPI_HAS_TRANSACTION
-//static SPISettings settings;
+#if defined(ESP8266)
+	#include <eagle_soc.h>
 #endif
 
 class gpio_MCP23S17 {
@@ -159,8 +160,9 @@ protected:
 	#if defined (SPI_HAS_TRANSACTION)
 		SPI.beginTransaction(SPISettings(_MCPMaxSpeed, MSBFIRST, SPI_MODE0));
 	#endif
-
-	#if defined(__FASTWRITE)
+	#if defined(ESP8266)
+		GPIO_REG_WRITE(GPIO_OUT_W1TC_ADDRESS, _pinRegister(_cs));//L
+	#elif defined(__FASTWRITE)
 		digitalWriteFast(_cs, LOW);
 	#else
 		digitalWrite(_cs, LOW);
@@ -171,7 +173,9 @@ protected:
 	
 	inline __attribute__((always_inline))
 	void _GPIOendSend(void){
-	#if defined(__FASTWRITE)
+	#if defined(ESP8266)
+		GPIO_REG_WRITE(GPIO_OUT_W1TS_ADDRESS, _pinRegister(_cs));//H
+	#elif defined(__FASTWRITE)
 		digitalWriteFast(_cs, HIGH);
 	#else
 		digitalWrite(_cs, HIGH);
@@ -203,7 +207,14 @@ protected:
 			SPI.transfer(data & 0xFF);
 		#endif
 		_GPIOendSend();
-}
+	}
+	
+	#if defined(ESP8266)
+	uint32_t _pinRegister(uint8_t pin)
+	__attribute__((always_inline)) {
+		return _BV(pin);
+	}
+	#endif
 	
 	
 	

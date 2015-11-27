@@ -30,7 +30,7 @@ gpio_MCP23S17::gpio_MCP23S17(){
 int gpio_MCP23S17::getInterruptNumber(byte pin) {
 	int intNum = digitalPinToInterrupt(pin);
 	if (intNum != NOT_AN_INTERRUPT) {
-		#if defined (SPI_HAS_TRANSACTION)
+		#if defined (SPI_HAS_TRANSACTION) && !defined(ESP8266)
 			SPI.usingInterrupt(intNum);
 		#endif
 		return intNum;
@@ -122,7 +122,11 @@ void gpio_MCP23S17::begin(bool protocolInitOverride) {
 		#endif
 	}
 	pinMode(_cs, OUTPUT);
-	digitalWrite(_cs, HIGH);
+	#if defined(ESP8266)
+		GPIO_REG_WRITE(GPIO_OUT_W1TS_ADDRESS, _pinRegister(_cs));//H
+	#else
+		digitalWrite(_cs, HIGH);
+	#endif
 	delay(100);
 	
 	_useHaen == 1 ? _GPIOwriteByte(MCP23S17_IOCON,0b00101000) : _GPIOwriteByte(MCP23S17_IOCON,0b00100000);
