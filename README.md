@@ -31,5 +31,5 @@ GND..[|.........|] INT-B<br>
 CS.....[|.........|] RST (connect to +)<br>
 SCK...[|.........|] A2<br>
 MOSI.[|.........|] A1<br>
-MISO..[|____|] A0<br>
+MISO.[|____|] A0<br>
 <br>
