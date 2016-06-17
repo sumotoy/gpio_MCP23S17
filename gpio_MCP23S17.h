@@ -63,7 +63,7 @@ A2,A1,A0 tied to ground = 0x20
 #include <SPI.h>//this chip needs SPI
 
 #if defined (SPI_HAS_TRANSACTION)
-#if defined(__MK20DX128__) || defined(__MK20DX256__)//Teensy 3.0 or 3.1
+#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 const static uint32_t _MCPMaxSpeed = 30000000UL;
 #elif defined(ESP8266)
 const static uint32_t _MCPMaxSpeed = 80000000UL;
@@ -119,7 +119,7 @@ class gpio_MCP23S17 {
 
 public:
 	
-	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__)//teensy stuff
+	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 	gpio_MCP23S17(const uint8_t csPin,const uint8_t haenAdrs,const uint8_t mosi_pin=11,const uint8_t sclk_pin=13,const uint8_t miso_pin=12);//any pin,0x20....0x27
 	void 			postSetup(const uint8_t csPin,const uint8_t haenAdrs,const uint8_t mosi_pin=11,const uint8_t sclk_pin=13,const uint8_t miso_pin=12);//used with other libraries only
 	#else
@@ -223,7 +223,7 @@ protected:
 private:
     uint8_t 		_cs;
 	uint8_t 		_adrs;
-	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__)
+	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		uint8_t _miso, _mosi, _sclk;
 		boolean	_useAltSPI;
 	#endif

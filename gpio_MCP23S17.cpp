@@ -41,7 +41,7 @@ int gpio_MCP23S17::getInterruptNumber(byte pin) {
 
 
 
-#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__)//teensy stuff
+#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 gpio_MCP23S17::gpio_MCP23S17(const uint8_t csPin,const uint8_t haenAdrs,const uint8_t mosi_pin,const uint8_t sclk_pin,const uint8_t miso_pin){
 	_mosi = mosi_pin;
 	_miso = miso_pin;
@@ -90,7 +90,7 @@ void gpio_MCP23S17::postSetup(const uint8_t csPin,const uint8_t haenAdrs){
 		_adrs = 0;
 		_useHaen = 0;
 	}
-	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__)//teensy stuff
+	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 	_useAltSPI = false;
 	#endif
 	_readCmd =  (_adrs << 1) | 1;
@@ -102,7 +102,7 @@ void gpio_MCP23S17::postSetup(const uint8_t csPin,const uint8_t haenAdrs){
 
 void gpio_MCP23S17::begin(bool protocolInitOverride) {
 	if (!protocolInitOverride){
-		#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__)//teensy stuff
+		#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		if (_useAltSPI){
 			if ((_mosi == 11 || _mosi == 7) && (_miso == 12 || _miso == 8) && (_sclk == 13 || _sclk == 14)) {//valid SPI pins?
 				SPI.setMOSI(_mosi);
