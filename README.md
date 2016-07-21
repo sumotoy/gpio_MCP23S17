@@ -17,23 +17,27 @@ MCP23Sxx series has very interesting features like HAEN that let you use several
  
 ------------------------------ MCP23S17 WIRING ------------------------------------<br>
 This chip has a very useful feature called HAEN that allow you to share the same CS pin trough<br>
-8 different addresses. Of course chip has to be Microchip and should be assigned to different addresses!<br>
+8 different addresses. Of course chip must me an MCP23Sxx serie compatible with HAEN and should be assigned to different address!<br>
 <br>
 Basic Address:  00100 A2 A1 A0 (from 0x20 to 0x27)<br>
-A2,A1,A0 tied to ground = 0x20<br>
+(A2,A1,A0 tied to ground = 0x20)<br>
+IOA: Port A<br>
+IOB: Port B<br>
 <br>
-IOB-0.[|...U...|] IOA-7<br>
-IOB-1.[|.........|] IOA-6<br>
-IOB-2.[|.........|] IOA-5<br>
-IOB-3.[|.........|] IOA-4<br>
-IOB-4.[|.........|] IOA-3<br>
-IOB-5.[|.........|] IOA-2<br>
-IOB-6.[|.........|] IOA-1<br>
-IOB-7.[|.........|] IOA-0<br>
-VCC...[|.........|] INT-A<br>
-GND..[|.........|] INT-B<br>
-CS.....[|.........|] RST (connect to +)<br>
-SCK...[|.........|] A2<br>
-MOSI.[|.........|] A1<br>
-MISO.[|____|] A0<br>
+```
+ IOB-0 [|    U    |] IOA-7
+ IOB-1 [|         |] IOA-6
+ IOB-2 [|         |] IOA-5
+ IOB-3 [|         |] IOA-4
+ IOB-4 [|         |] IOA-3
+ IOB-5 [|         |] IOA-2
+ IOB-6 [|         |] IOA-1
+ IOB-7 [|         |] IOA-0
+ VCC   [|         |] INT-A
+ GND   [|         |] INT-B
+ CS    [|         |] RST (connect to VCC)
+ SCK   [|         |] A2  (address 2)
+ MOSI  [|         |] A1  (address 1)
+ MISO  [|_________|] A0  (address 0)
+ ```
 <br>
