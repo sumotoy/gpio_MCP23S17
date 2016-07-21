@@ -8,10 +8,13 @@ MCP23Sxx series has very interesting features like HAEN that let you use several
 ***
 <b>Features:</b><br>
  - Full access to all MCP features.
+ - You can configure any pin as Input or Output.
+ - Internal pin status register let you use command like invert.
  - Uses HAEN to have several MCP23Sxx chip in the same SPI bus (and CS!).
  - Scalable complexity, easy to use as GPIO but advanced use always possible.
  - Mature and stable library, I've used in many projects.
  - Fully SPI transaction compatible, it doesn't interfere with other SPI devices.
+ - Can be included in other libraries.
  - Compatible with all 8bit arduino, DUE, Teensy(all), ESP8266.<br>
 
 ***
