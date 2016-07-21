@@ -1,10 +1,14 @@
-# gpio_MCP23S17
-A complete library for Microchip MCP23S17 http://ww1.microchip.com/downloads/en/DeviceDoc/21952b.pdf, a 16 port I/O GPIO with Interrupt and *HAEN* that let you use 8 chip (16 * 8 ports!) by using just 3 (or 4 if you need input) CPU pins!<br>
-The library it's fully *SPI transaction compatible* and can be easily included in other libraries, has methods that let's you change ports values fastly and you can easily access chip register directly.<br>
-This library has been extracted from my universal gpio_library and I will maintain separately.<br>
-I have included several examples but a complete wiki and detailed images will be published soon.<br>
-Features:<br>
+# gpio_MCP23S17 The 'third reincarnation'
+This is the last reincarnation for the MCP23S17 GPIO expander http://ww1.microchip.com/downloads/en/DeviceDoc/21952b.pdf, a 16 port I/O expander with advanced features working in SPI. It was completely recoded and this time uses specialized CPU specified SPI sub-libraries to simplify library and get the most from this chip.<br>
+I simplified many commands and now it's possible use complicated configurations very easily and fixed several issues of the old libraries.<br>
+I have included full SPI Transaction (where supported) and the ability to use any possible MCU SPI bus or alternative SPI pin and you can access any possible feature of the chip easily.<br>
+This version is a 'step ahead' compared the old libraries, commands are slight different and unfortunatly not compatible, this is why I pushed in  another fork.<br>
+I have included many examples and you will find some advanced example that uses different chip in the same time as example.<br>
+MCP23Sxx series has very interesting features like HAEN that let you use several chip sharing the same SPI BUS and CS!<br>
+
+<b>Features:</b><br>
  - Full access to all MCP features.
+ - Uses HAEN to have several MCP23Sxx chip in the same SPI bus (and CS!).
  - Scalable complexity, easy to use as GPIO but advanced use always possible.
  - Mature and stable library, I've used in many projects.
  - Fully SPI transaction compatible, it doesn't interfere with other SPI devices.
