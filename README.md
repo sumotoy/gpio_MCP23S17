@@ -8,6 +8,7 @@ MCP23Sxx series has very interesting features like HAEN that let you use several
 ***
 <b>Features:</b><br>
  - Full access to all MCP features.
+ - Always access chip in the fastest way trough specialized MCU SPI library.
  - You can configure any pin as Input or Output.
  - Internal pin status register let you use command like invert.
  - Uses HAEN to have several MCP23Sxx chip in the same SPI bus (and CS!).
@@ -44,3 +45,14 @@ IOB: Port B<br>
  MISO  [|_________|] A0  (address 0)
  ```
 <br>
+
+***
+
+<b>Needed library:</b><br>
+This library uses specialized sub-SPI libraries for every processor, this ensure a cleaner code and the fastest way to access it. The library needed are specific for each CPU:<br>
+ - AVR 8 Bit: https://github.com/sumotoy/SPI_AVR
+ - Teensy 3.x: https://github.com/sumotoy/SPI_FIFO_t3
+ - Teensy LC: https://github.com/sumotoy/SPI_LC
+ - DUE: https://github.com/sumotoy/SPI_DUE
+ - ESP 8266: https://github.com/sumotoy/SPI_ESP
+ - more to come...
