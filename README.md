@@ -8,6 +8,8 @@ MCP23Sxx series has very interesting features like HAEN that let you use several
 ***
 <b>Features:</b><br>
  - Full access to all MCP features.
+ - 16 I/O
+ - Interrupt (combined or separated for each port)
  - Always access chip in the fastest way trough specialized MCU SPI library.
  - You can configure any pin as Input or Output.
  - Internal pin status register let you use command like invert.
