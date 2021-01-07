@@ -30,7 +30,7 @@ gpio_MCP23S17::gpio_MCP23S17(){
 int gpio_MCP23S17::getInterruptNumber(byte pin) {
 	int intNum = digitalPinToInterrupt(pin);
 	if (intNum != NOT_AN_INTERRUPT) {
-		#if defined (SPI_HAS_TRANSACTION) && !defined(ESP8266)
+		#if defined (SPI_HAS_TRANSACTION) && !defined(ESP8266) && !defined(ESP32)
 			SPI.usingInterrupt(intNum);
 		#endif
 		return intNum;
